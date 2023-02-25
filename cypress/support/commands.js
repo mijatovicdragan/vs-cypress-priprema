@@ -25,17 +25,16 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 Cypress.Commands.add("loginBefore", () => {
-    cy.request({
-        method: "POST",
-        url: "https://cypress-api.vivifyscrum-stage.com/api/v2/login",
-        body: {
-            email: Cypress.env(testUserEmail),
-            password: Cypress.env("testUserPassword")
-        },
-    }).then((response) => {
-        window.localStorage.setItem("token", response.body.token);
-        window.localStorage.setItem("user", JSON.stringify(response.body.user));
-        window.localStorage.setItem("user_id", response.body.user.id);
+  cy.request({
+    method: "POST",
+    url: "https://cypress-api.vivifyscrum-stage.com/api/v2/login",
+    body: {
+      email: Cypress.env("testUserEmail"),
+      password: Cypress.env("testUserPassword"),
+    },
+  }).then((response) => {
+    window.localStorage.setItem("token", response.body.token);
+    window.localStorage.setItem("user", JSON.stringify(response.body.user));
+    window.localStorage.setItem("user_id", response.body.user.id);
   });
 });
-
