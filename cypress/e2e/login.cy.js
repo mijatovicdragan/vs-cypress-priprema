@@ -14,17 +14,34 @@ describe("login test", () => {
   });
 
   it("login with valid credentials", () => {
-    cy.intercept(
-      "POST",
-      "https://cypress-api.vivifyscrum-stage.com/api/v2/login",
-      (req) => {}
-    ).as("succesfulLogin");
+    cy.intercept({
+      method: "POST",
+      url: `${Cypress.env("apiUrl")}/login`,
+    }).as("succesfulLogin");
 
-    authLogin.login(credentials.email, credentials.password);
+    cy.intercept({
+      method: "GET",
+      url: `${Cypress.env("apiUrl")}/my-organizations`,
+    }).as("getMyOrganizations");
+
+    authLogin.login(
+      Cypress.env("testUserEmail"),
+      Cypress.env("testUserPassword")
+    );
+
     cy.url().should("not.include", "login");
     authLogin.userName.should("contain", "Neki Korisnik");
-    cy.wait("@succesfulLogin").then((request) => {
-      expect(request.response.statusCode).to.eql(200);
+    authLogin.loginPageHeading.should("not.exist");
+
+    cy.wait("@succesfulLogin").then((interception) => {
+      expect(interception.response.statusCode).eq(200);
+      expect(interception.response.body.token).to.exist;
     });
+
+    cy.wait("@getMyOrganizations").then((interception) => {
+      expect(interception.response.statusCode).eq(200);
+    });
+
+    cy.url().should("include", "/my-organizations");
   });
 });
