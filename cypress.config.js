@@ -11,5 +11,6 @@ module.exports = defineConfig({
     apiUrl: "https://cypress-api.vivifyscrum-stage.com/api/v2",
     testUserEmail: "pajapatak@test.com",
     testUserPassword: "pajapatak1",
+    invalidTestPassword: "pajapataktest.com",
   },
 });

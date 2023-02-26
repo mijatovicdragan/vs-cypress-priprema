@@ -2,11 +2,6 @@
 
 import { authLogin } from "../page_objects/loginPage";
 
-const credentials = {
-  email: "pajapatak@test.com",
-  password: "pajapatak1",
-};
-
 describe("login test", () => {
   beforeEach("visit app login page", () => {
     cy.visit("/login");
